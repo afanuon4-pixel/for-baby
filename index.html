@@ -66,7 +66,7 @@
         }
 
         /* 🦋 فراشات رقيقة متموجة */
-        .butterfly {
+        .mom-butterfly {
             position: absolute;
             font-size: 24px;
             animation: butterflyWander 14s linear infinite;
@@ -81,7 +81,7 @@
             100% { transform: translateY(-10vh) translateX(-10px) scale(0.8); }
         }
 
-        /* 💕 عند اللمس يظهر ياسمين ناعم */
+        /* 💕 عند اللمس يظهر ياسمين وقلوب ناعمة */
         .touch-flower {
             position: absolute;
             pointer-events: none;
@@ -164,7 +164,7 @@
         .time-label { font-size: 12px; color: #475569; margin-top: 7px; font-weight: bold; }
         .letter-text { font-size: 16px; color: #831843; font-weight: bold; line-height: 1.7; transition: all 0.5s ease; width: 100%; min-height: 60px; }
 
-        /* معرض الصور */
+        /* معرض الصور الافتراضي */
         .gallery {
             display: flex;
             flex-direction: column;
@@ -177,12 +177,23 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.04); border: 1px solid #fce7f3;
             transform: translateY(30px); opacity: 0; transition: all 0.6s ease; cursor: pointer;
             width: 100%;
+            position: relative;
         }
         .photo-card.visible { opacity: 1; transform: translateY(0) rotate(-1deg); }
-        .photo-card.clicked-effect { animation: cardClickGlow 0.5s ease-out; }
-        @keyframes cardClickGlow { 0% { transform: scale(1); box-shadow: 0 0 0 rgba(219, 39, 119, 0); } 50% { transform: scale(1.04); box-shadow: 0 0 25px rgba(219, 39, 119, 0.7); border-color: #db2777; } 100% { transform: scale(1); } }
+        .photo-card:nth-child(even).visible { transform: translateY(0) rotate(1deg); }
         .photo-card img { width: 100%; height: 280px; object-fit: cover; border-radius: 8px; background: #fff5f5; display: block; }
         .photo-caption { font-size: 15px; color: #4c0519; margin-top: 12px; font-weight: bold; }
+
+        /* ✨ التأثير الجديد عند الكبس على كرت الصورة */
+        .photo-card.clicked-effect {
+            animation: cardClickGlow 0.5s ease-out;
+            z-index: 10;
+        }
+        @keyframes cardClickGlow {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(219, 39, 119, 0); }
+            50% { transform: scale(1.04); box-shadow: 0 0 25px rgba(219, 39, 119, 0.7); border-color: #db2777; }
+            100% { transform: scale(1); box-shadow: 0 10px 20px rgba(0,0,0,0.04); }
+        }
 
         #lightbox-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -193,12 +204,28 @@
         #lightbox-img { max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 12px; display: block; }
         .lightbox-caption { color: white; text-align: center; margin-top: 15px; font-size: 18px; font-weight: bold; }
         .lightbox-close { position: absolute; top: -40px; right: 0; color: white; font-size: 28px; cursor: pointer; }
+
+        .admin-trigger { position: fixed; bottom: 12px; left: 12px; width: 30px; height: 30px; background: rgba(219,39,119,0.05); border-radius: 50%; cursor: pointer; z-index: 99999; }
+        #admin-panel {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 25px; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            z-index: 100000; width: 92%; max-width: 440px; max-height: 85vh; overflow-y: auto; border: 2px solid #fbcfe8;
+        }
+        .admin-close { float: right; cursor: pointer; font-weight: bold; color: #db2777; }
+        .admin-group { margin-bottom: 15px; text-align: right; background: #fff5f5; padding: 12px; border-radius: 12px; }
+        .admin-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #4c0519; }
+        .admin-group input[type="file"] { width: 100%; background: white; }
+        textarea { border-radius: 10px; text-align: right; resize: vertical; width: 100%; padding: 8px; border: 1px solid #fbcfe8; }
     </style>
 </head>
 <body>
 
     <audio id="bg-romantic-audio" loop src=""></audio>
+
+    <!-- 🌟 حاوية الحركات والنجوم والمؤثرات الحية -->
     <div id="dynamic-bg"></div>
+    
+    <div class="admin-trigger" id="admin-secret-btn" onclick="triggerAdminAuth()"></div>
 
     <div id="lightbox-overlay" onclick="closeLightbox()">
         <div class="lightbox-wrapper" onclick="event.stopPropagation()">
@@ -209,20 +236,25 @@
     </div>
 
     <div id="secured-app-content">
+        <!-- شاشة القفل -->
         <div class="lock-card" id="lock-screen">
             <div class="envelope-icon">🌸💝</div>
             <h2>إلى مريم.. نبض قلبي</h2>
-            <p class="subtitle">اكتبي كلمة السر لفتح الرسالة</p>
+            <p class="subtitle">أدخلي كلمة السر لفتح المفاجأة</p>
+            
             <div class="password-container">
                 <input type="password" id="password-input" placeholder="اكتبي كلمة السر هنا...">
                 <span class="toggle-password" onclick="toggleVisibility('password-input', this)">👁️</span>
             </div>
-            <button class="open-btn" onclick="checkEnvelopePassword()">افتحي الظرف 🔒</button>
+            
+            <button class="open-btn" onclick="checkEnvelopePassword()">افتحي المظروف 🔒</button>
             <div class="error-msg" id="error-message">كلمة السر غير صحيحة يا مريم! 💕</div>
         </div>
 
+        <!-- محتوى المفاجأة الرئيسي -->
         <div id="inner-content">
-            <button class="back-link-btn" onclick="goBackToEnvelope()">↩️إغلاق الظرف</button>
+            <button class="back-link-btn" onclick="goBackToEnvelope()">↩️ إغلاق المظروف</button>
+
             <h1>مريم.. يا كل دنيتي ✨</h1>
             
             <div class="countdown-container">
@@ -243,10 +275,39 @@
         </div>
     </div>
 
-    <script>
-        const ENVELOPE_PASSWORD = "iloveyou"; // تم تغيير الباسورد لاسمها
-        let startDateSetting = new Date(2026, 0, 1, 0, 0, 0); // تاريخ البداية
+    <!-- لوحة التحكم السرية للموقع -->
+    <div id="admin-panel">
+        <span class="admin-close" onclick="closeAdminPanel()">✕ إغلاق</span>
+        <h3 style="margin-bottom: 15px; color: #be185d;">⚙️ إعدادات صفحة مريم</h3>
         
+        <div class="admin-group">
+            <label>📅 تاريخ مميز للعداد (YYYY-MM-DD):</label>
+            <input type="text" id="config-date" value="2026-01-01">
+        </div>
+
+        <div class="admin-group" style="background: #fdf2f8;">
+            <label style="font-weight: bold; color: #db2777;">🎵 رفع الخلفية الموسيقية لمريم (MP3):</label>
+            <input type="file" id="admin-audio-upload" accept="audio/*,video/*" onchange="processAudioUpload(this)">
+            <small id="audio-status-msg">اختر الملف الصوتي وسيتم تشغيله تلقائياً.</small>
+        </div>
+
+        <h4>📝 رسائل وعبارات لمريم:</h4>
+        <div class="admin-group">
+            <textarea id="msg-input-1" rows="2"></textarea>
+            <textarea id="msg-input-2" rows="2"></textarea>
+            <textarea id="msg-input-3" rows="2"></textarea>
+        </div>
+
+        <h4>📸 صور الذكريات مع مريم:</h4>
+        <div id="admin-cards-inputs"></div>
+        <button class="open-btn" onclick="saveConfig()">حفظ وتحديث المفاجأة بالكامل ✨</button>
+    </div>
+
+    <script>
+        const ENVELOPE_PASSWORD = "maryam";      
+        const ADMIN_PASSWORD = "admin123";      
+
+        let startDateSetting = new Date(2026, 0, 1, 0, 0, 0);
         let loveMessages = [
             "مريم.. وجودكِ في حياتي هو أجمل نعمة، أحبكِ بكل ما فيني. ❤️",
             "أنتِ لستِ فقط حبيبتي، أنتِ ملهمتي ورفيقة دربي يا مريم. ✨",
@@ -262,26 +323,122 @@
             { src: "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=500", cap: "مريم.. يا أجمل قدر 💞" }
         ];
 
-        // ... (باقي الكود الوظيفي يبقى كما هو)
+        let counterInterval = null;
+        let db = null;
+        let selectedAudioBlob = null; 
+        let audioPlayer = null;
+
+        function initIndexedDB() {
+            const request = indexedDB.open("MotherProjectFixedDB", 1);
+            request.onupgradeneeded = function(e) {
+                db = e.target.result;
+                if (!db.objectStoreNames.contains("audioStore")) db.createObjectStore("audioStore");
+            };
+            request.onsuccess = function(e) {
+                db = e.target.result;
+                loadSavedData(); 
+            };
+            request.onerror = function() { loadSavedData(); };
+        }
+
+        function runLiveVividEffects() {
+            const container = document.getElementById('dynamic-bg');
+            if(!container) return;
+            container.innerHTML = ''; 
+
+            for (let i = 0; i < 25; i++) {
+                let star = document.createElement('div');
+                star.className = 'gold-star';
+                star.innerHTML = '✦';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.animationDelay = (Math.random() * 3) + 's';
+                container.appendChild(star);
+            }
+
+            for (let i = 0; i < 15; i++) {
+                let petal = document.createElement('div');
+                petal.className = 'petal';
+                let size = Math.random() * 12 + 8;
+                petal.style.width = size + 'px';
+                petal.style.height = (size * 1.3) + 'px';
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.animationDelay = (Math.random() * 6) + 's';
+                petal.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                container.appendChild(petal);
+            }
+
+            const bugs = ['🦋', '🌸', '💕', '❤️'];
+            for (let i = 0; i < 6; i++) {
+                let b = document.createElement('div');
+                b.className = 'mom-butterfly';
+                b.innerText = bugs[Math.floor(Math.random() * bugs.length)];
+                b.style.left = (Math.random() * 85) + 'vw';
+                b.style.animationDelay = (Math.random() * 7) + 's';
+                container.appendChild(b);
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#admin-panel')) return;
+
+            const flowers = ['🌸', '✨', '🤍', '💖', '❤️'];
+            let f = document.createElement('div');
+            f.className = 'touch-flower';
+            f.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+            f.style.left = e.pageX + 'px';
+            f.style.top = e.pageY + 'px';
+            document.body.appendChild(f);
+            setTimeout(() => { f.remove(); }, 1200);
+        });
+
         function toggleVisibility(inputId, eyeIcon) {
             const inputField = document.getElementById(inputId);
-            inputField.type = inputField.type === "password" ? "text" : "password";
-            eyeIcon.innerText = inputField.type === "password" ? "👁️" : "🙈";
+            if (inputField.type === "password") {
+                inputField.type = "text"; eyeIcon.innerText = "🙈";
+            } else {
+                inputField.type = "password"; eyeIcon.innerText = "👁️";
+            }
         }
 
         function checkEnvelopePassword() {
-            if (document.getElementById("password-input").value.toLowerCase().trim() === ENVELOPE_PASSWORD) {
+            const userInput = document.getElementById("password-input").value;
+            if (userInput.toLowerCase().trim() === ENVELOPE_PASSWORD) {
                 document.getElementById("lock-screen").style.display = "none";
-                document.getElementById("inner-content").style.display = "block";
-                setTimeout(() => { document.getElementById("inner-content").style.opacity = "1"; }, 50);
+                
+                if(audioPlayer && audioPlayer.src) {
+                    audioPlayer.play().catch(e => console.log("Audio presentation blocked"));
+                }
+                const inner = document.getElementById("inner-content");
+                inner.style.display = "block";
+                setTimeout(() => { inner.style.opacity = "1"; handleScrollTrigger(); }, 50);
+                startCounter();
+                startLettersCarousel();
             } else {
                 document.getElementById("error-message").style.display = "block";
             }
         }
 
         function goBackToEnvelope() {
+            if (counterInterval) clearInterval(counterInterval);
+            if(audioPlayer) { audioPlayer.pause(); audioPlayer.currentTime = 0; }
             document.getElementById("inner-content").style.display = "none";
+            document.getElementById("inner-content").style.opacity = "0";
             document.getElementById("lock-screen").style.display = "block";
+            document.getElementById("password-input").value = "";
+            document.getElementById("error-message").style.display = "none";
+        }
+
+        function handleCardClick(cardId, imgSrc, captionText) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+
+            card.classList.add('clicked-effect');
+
+            setTimeout(() => {
+                card.classList.remove('clicked-effect');
+                openLightbox(imgSrc, captionText);
+            }, 450);
         }
 
         function openLightbox(imgSrc, captionText) {
@@ -292,19 +449,128 @@
 
         function closeLightbox() { document.getElementById('lightbox-overlay').classList.remove('active'); }
 
-        window.onload = () => {
-            const gallery = document.getElementById('main-gallery');
-            defaultPhotos.forEach((p, i) => {
+        document.getElementById('lightbox-overlay').addEventListener('click', closeLightbox);
+
+        function triggerAdminAuth() {
+            const secretPass = prompt("🛡️ أدخل رمز الإدارة للتعديل:");
+            if (secretPass === ADMIN_PASSWORD) document.getElementById('admin-panel').style.display = 'block';
+        }
+
+        function closeAdminPanel() { document.getElementById('admin-panel').style.display = 'none'; }
+
+        function buildGalleryAndInputs() {
+            const galleryEl = document.getElementById('main-gallery');
+            const inputsEl = document.getElementById('admin-cards-inputs');
+            if(!galleryEl || !inputsEl) return;
+            galleryEl.innerHTML = ''; inputsEl.innerHTML = '';
+
+            for (let i = 1; i <= 6; i++) {
                 let card = document.createElement('div');
-                card.className = 'photo-card visible';
-                card.innerHTML = `<img src="${p.src}"><div class="photo-caption">${p.cap}</div>`;
-                card.onclick = () => {
-                    card.classList.add('clicked-effect');
-                    setTimeout(() => { card.classList.remove('clicked-effect'); openLightbox(p.src, p.cap); }, 450);
-                };
-                gallery.appendChild(card);
+                card.className = 'photo-card'; card.id = `card-${i}`;
+                card.setAttribute('onclick', `handleCardClick('card-${i}', document.getElementById('img-${i}').src, document.getElementById('cap-${i}').innerText)`);
+                
+                card.innerHTML = `<img id="img-${i}" src="${defaultPhotos[i-1].src}"><div class="photo-caption" id="cap-${i}">${defaultPhotos[i-1].cap}</div>`;
+                galleryEl.appendChild(card);
+
+                let group = document.createElement('div'); group.className = 'admin-group';
+                group.innerHTML = `<label>صورة الذكرى (${i}):</label><input type="file" accept="image/*" onchange="processImageUpload(this, ${i})"><input type="text" id="cfg-cap-${i}" value="${defaultPhotos[i-1].cap}">`;
+                inputsEl.appendChild(group);
+            }
+        }
+
+        function startCounter() {
+            if (counterInterval) clearInterval(counterInterval);
+            counterInterval = setInterval(() => {
+                const difference = new Date() - startDateSetting;
+                document.getElementById("days").innerText = Math.floor(difference / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById("hours").innerText = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById("minutes").innerText = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById("seconds").innerText = Math.floor((difference % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            }, 1000);
+        }
+
+        function startLettersCarousel() {
+            const displayEl = document.getElementById('love-letter-display');
+            let idx = 0; displayEl.innerText = loveMessages[0];
+            setInterval(() => {
+                idx = (idx + 1) % loveMessages.length; displayEl.innerText = loveMessages[idx];
+            }, 5000);
+        }
+
+        window.addEventListener('scroll', handleScrollTrigger);
+        function handleScrollTrigger() {
+            document.querySelectorAll('.photo-card').forEach(card => {
+                if (card.getBoundingClientRect().top < window.innerHeight) card.classList.add('visible');
             });
-            document.getElementById('love-letter-display').innerText = loveMessages[0];
+        }
+
+        function processImageUpload(input, index) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) { 
+                    document.getElementById(`img-${index}`).src = e.target.result; 
+                    localStorage.setItem(`mom_img_fixed_${index}`, e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function processAudioUpload(input) {
+            if (input.files && input.files[0]) selectedAudioBlob = input.files[0];
+        }
+
+        function saveConfig() {
+            localStorage.setItem('mom_date_fixed', document.getElementById('config-date').value);
+            for(let i = 1; i <= 3; i++) localStorage.setItem(`mom_msg_fixed_${i}`, document.getElementById(`msg-input-${i}`).value);
+            for(let i = 1; i <= 6; i++) localStorage.setItem(`mom_cap_fixed_${i}`, document.getElementById(`cfg-cap-${i}`).value);
+            
+            if(selectedAudioBlob && db) {
+                const transaction = db.transaction(["audioStore"], "readwrite");
+                transaction.objectStore("audioStore").put(selectedAudioBlob, "mom_bg_track_fixed");
+                transaction.oncomplete = function() {
+                    audioPlayer.src = URL.createObjectURL(selectedAudioBlob);
+                    location.reload();
+                };
+            } else {
+                location.reload();
+            }
+        }
+
+        function loadSavedData() {
+            const sDate = localStorage.getItem('mom_date_fixed');
+            if(sDate) {
+                document.getElementById('display-date-text').innerText = "عمر كامل من الحب منذ: " + sDate.split('-').reverse().join('-');
+                const p = sDate.split('-'); startDateSetting = new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2]));
+            }
+            if(db) {
+                db.transaction(["audioStore"], "readonly").objectStore("audioStore").get("mom_bg_track_fixed").onsuccess = function(e) {
+                    if (e.target.result && audioPlayer) audioPlayer.src = URL.createObjectURL(e.target.result);
+                };
+            }
+            for(let i = 1; i <= 3; i++) {
+                let msg = localStorage.getItem(`mom_msg_fixed_${i}`);
+                if(msg) { loveMessages[i-1] = msg; document.getElementById(`msg-input-${i}`).value = msg; }
+                else { document.getElementById(`msg-input-${i}`).value = loveMessages[i-1]; }
+            }
+            for(let i = 1; i <= 6; i++) {
+                let img = localStorage.getItem(`mom_img_fixed_${i}`); if(img) defaultPhotos[i-1].src = img;
+                let cap = localStorage.getItem(`mom_cap_fixed_${i}`); if(cap) defaultPhotos[i-1].cap = cap;
+                
+                let imgEl = document.getElementById(`img-${i}`);
+                let capEl = document.getElementById(`cap-${i}`);
+                if(imgEl) imgEl.src = defaultPhotos[i-1].src;
+                if(capEl) capEl.innerText = defaultPhotos[i-1].cap;
+                
+                let cfgCapEl = document.getElementById(`cfg-cap-${i}`);
+                if(cfgCapEl) cfgCapEl.value = defaultPhotos[i-1].cap;
+            }
+        }
+
+        window.onload = function() { 
+            audioPlayer = document.getElementById('bg-romantic-audio');
+            buildGalleryAndInputs(); 
+            initIndexedDB();
+            runLiveVividEffects(); 
         }
     </script>
 </body>
