@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى مريم الغالية 🌸 نبض قلبي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff0f5 0%, #fffbf0 50%, #ffe4e6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px 10px;
+            position: relative;
+        }
+
+        /* ✨ حاوية حركات الخلفية والنجوم */
+        #dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 🌸 تساقط بتلات الورد التلقائي */
+        .petal {
+            position: absolute;
+            background: rgba(255, 182, 193, 0.7);
+            border-radius: 15px 2px 15px 2px;
+            animation: fall-and-shake 8s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes fall-and-shake {
+            0% { transform: translateY(-20px) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.9; }
+            100% { transform: translateY(105vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* ⭐ نجوم ذهبية متلألئة */
+        .gold-star {
+            position: absolute;
+            color: #fbbf24;
+            font-size: 14px;
+            animation: starPulse 2.5s infinite ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        @keyframes starPulse {
+            0%, 100% { opacity: 0.1; transform: scale(0.6); }
+            50% { opacity: 0.9; transform: scale(1.3); }
+        }
+
+        /* 🦋 فراشات رقيقة متموجة */
+        .butterfly {
+            position: absolute;
+            font-size: 24px;
+            animation: butterflyWander 14s linear infinite;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        @keyframes butterflyWander {
+            0% { transform: translateY(105vh) translateX(0) scale(0.8); }
+            25% { transform: translateY(75vh) translateX(40px) scale(1); }
+            50% { transform: translateY(45vh) translateX(-30px) scale(0.9); }
+            75% { transform: translateY(20vh) translateX(50px) scale(1.1); }
+            100% { transform: translateY(-10vh) translateX(-10px) scale(0.8); }
+        }
+
+        /* 💕 عند اللمس يظهر ياسمين ناعم */
+        .touch-flower {
+            position: absolute;
+            pointer-events: none;
+            animation: flowerFade 1.2s ease-out forwards;
+            z-index: 9999;
+            font-size: 20px;
+        }
+        @keyframes flowerFade {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(-50%, -100%) scale(1.4) rotate(45deg); opacity: 0; }
+        }
+
+        .password-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .password-container input {
+            width: 100%;
+            padding: 14px 20px 14px 55px;
+            border: 2px solid #fbcfe8;
+            border-radius: 25px;
+            text-align: center;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .toggle-password {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; font-size: 20px; user-select: none; color: #db2777; z-index: 999; padding: 5px;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #db2777; box-shadow: 0 0 10px rgba(219, 39, 119, 0.2);
+        }
+
+        #secured-app-content {
+            width: 100%; max-width: 480px; text-align: center; z-index: 5; position: relative;
+        }
+
+        .lock-card {
+            background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px);
+            padding: 40px 25px; border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(219, 39, 119, 0.1);
+            width: 100%; transition: all 0.5s ease; border: 1px solid #fce7f3;
+        }
+        .envelope-icon { font-size: 70px; margin-bottom: 15px; display: inline-block; animation: floatAnimate 3s ease-in-out infinite; }
+        @keyframes floatAnimate { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        
+        #secured-app-content h1 { color: #be185d; text-shadow: 0 0 10px rgba(219,39,119,0.1); font-size: 26px; margin-bottom: 10px; }
+        .subtitle { color: #475569; font-size: 15px; margin-bottom: 25px; }
+        
+        .open-btn {
+            background: linear-gradient(45deg, #db2777, #f43f5e); color: white; border: none; padding: 14px 25px;
+            border-radius: 25px; font-size: 16px; cursor: pointer; width: 100%; font-weight: bold;
+            box-shadow: 0 6px 15px rgba(219, 39, 119, 0.25); transition: 0.3s; margin-top: 10px;
+        }
+        .open-btn:hover { transform: translateY(-3px); }
+        .error-msg { color: #ef4444; font-size: 14px; margin-top: 10px; display: none; }
+
+        #inner-content { display: none; opacity: 0; transition: opacity 0.8s ease; width: 100%; position: relative;}
+        
+        .back-link-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8;
+            padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold;
+            transition: 0.3s; margin-bottom: 20px;
+        }
+
+        .countdown-container, .letters-container {
+            background: rgba(255, 255, 255, 0.96); padding: 25px 20px; border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(219,39,119,0.03); margin: 20px 0; border: 1px solid #fce7f3;
+        }
+        .timer { display: flex; justify-content: space-around; margin-top: 15px; }
+        .time-box { display: flex; flex-direction: column; }
+        .time-num { font-size: 24px; font-weight: bold; color: #db2777; background: #fce7f3; padding: 8px 12px; border-radius: 12px; min-width: 55px; }
+        .time-label { font-size: 12px; color: #475569; margin-top: 7px; font-weight: bold; }
+        .letter-text { font-size: 16px; color: #831843; font-weight: bold; line-height: 1.7; transition: all 0.5s ease; width: 100%; min-height: 60px; }
+
+        /* معرض الصور */
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .photo-card {
+            background: white; padding: 14px; padding-bottom: 20px; border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.04); border: 1px solid #fce7f3;
+            transform: translateY(30px); opacity: 0; transition: all 0.6s ease; cursor: pointer;
+            width: 100%;
+        }
+        .photo-card.visible { opacity: 1; transform: translateY(0) rotate(-1deg); }
+        .photo-card.clicked-effect { animation: cardClickGlow 0.5s ease-out; }
+        @keyframes cardClickGlow { 0% { transform: scale(1); box-shadow: 0 0 0 rgba(219, 39, 119, 0); } 50% { transform: scale(1.04); box-shadow: 0 0 25px rgba(219, 39, 119, 0.7); border-color: #db2777; } 100% { transform: scale(1); } }
+        .photo-card img { width: 100%; height: 280px; object-fit: cover; border-radius: 8px; background: #fff5f5; display: block; }
+        .photo-caption { font-size: 15px; color: #4c0519; margin-top: 12px; font-weight: bold; }
+
+        #lightbox-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(76, 5, 25, 0.95); z-index: 9999999; justify-content: center; align-items: center; padding: 20px;
+        }
+        #lightbox-overlay.active { display: flex; }
+        .lightbox-wrapper { position: relative; max-width: 95%; max-height: 80vh; }
+        #lightbox-img { max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 12px; display: block; }
+        .lightbox-caption { color: white; text-align: center; margin-top: 15px; font-size: 18px; font-weight: bold; }
+        .lightbox-close { position: absolute; top: -40px; right: 0; color: white; font-size: 28px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-romantic-audio" loop src=""></audio>
+    <div id="dynamic-bg"></div>
+
+    <div id="lightbox-overlay" onclick="closeLightbox()">
+        <div class="lightbox-wrapper" onclick="event.stopPropagation()">
+            <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+            <img id="lightbox-img" src="">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <div id="secured-app-content">
+        <div class="lock-card" id="lock-screen">
+            <div class="envelope-icon">🌸💝</div>
+            <h2>إلى مريم.. نبض قلبي</h2>
+            <p class="subtitle">اكتبي كلمة السر لفتح الرسالة</p>
+            <div class="password-container">
+                <input type="password" id="password-input" placeholder="اكتبي كلمة السر هنا...">
+                <span class="toggle-password" onclick="toggleVisibility('password-input', this)">👁️</span>
+            </div>
+            <button class="open-btn" onclick="checkEnvelopePassword()">افتحي الظرف 🔒</button>
+            <div class="error-msg" id="error-message">كلمة السر غير صحيحة يا مريم! 💕</div>
+        </div>
+
+        <div id="inner-content">
+            <button class="back-link-btn" onclick="goBackToEnvelope()">↩️إغلاق الظرف</button>
+            <h1>مريم.. يا كل دنيتي ✨</h1>
+            
+            <div class="countdown-container">
+                <p id="display-date-text" style="color: #475569; font-size: 15px; font-weight: bold;">أنتِ أجمل ما حدث لي في حياتي</p>
+                <div class="timer">
+                    <div class="time-box"><span class="time-num" id="days">00</span><span class="time-label">يوم</span></div>
+                    <div class="time-box"><span class="time-num" id="hours">00</span><span class="time-label">ساعة</span></div>
+                    <div class="time-box"><span class="time-num" id="minutes">00</span><span class="time-label">دقيقة</span></div>
+                    <div class="time-box"><span class="time-num" id="seconds">00</span><span class="time-label">ثانية</span></div>
+                </div>
+            </div>
+
+            <div class="letters-container">
+                <div class="letter-text" id="love-letter-display">جاري تحميل رسائل الحب لمريم... ❤️</div>
+            </div>
+
+            <div class="gallery" id="main-gallery"></div>
+        </div>
+    </div>
+
+    <script>
+        const ENVELOPE_PASSWORD = "iloveyou"; // تم تغيير الباسورد لاسمها
+        let startDateSetting = new Date(2026, 0, 1, 0, 0, 0); // تاريخ البداية
+        
+        let loveMessages = [
+            "مريم.. وجودكِ في حياتي هو أجمل نعمة، أحبكِ بكل ما فيني. ❤️",
+            "أنتِ لستِ فقط حبيبتي، أنتِ ملهمتي ورفيقة دربي يا مريم. ✨",
+            "كل لحظة معكِ تساوي عندي العالم كله، دمتِ لي نبضاً. 🌸"
+        ];
+        
+        let defaultPhotos = [
+            { src: "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500", cap: "أجمل مريم في عيوني 🌸" },
+            { src: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500", cap: "ضحكتكِ هي سر سعادتي 🌹" },
+            { src: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=500", cap: "أنتِ دنيتي كلها يا مريم ✨" },
+            { src: "https://images.unsplash.com/photo-1494972308805-463bc619b34e?w=500", cap: "أحلى ذكرياتنا معاً 💖" },
+            { src: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=500", cap: "مكانكِ دائماً في قلبي 🌍" },
+            { src: "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=500", cap: "مريم.. يا أجمل قدر 💞" }
+        ];
+
+        // ... (باقي الكود الوظيفي يبقى كما هو)
+        function toggleVisibility(inputId, eyeIcon) {
+            const inputField = document.getElementById(inputId);
+            inputField.type = inputField.type === "password" ? "text" : "password";
+            eyeIcon.innerText = inputField.type === "password" ? "👁️" : "🙈";
+        }
+
+        function checkEnvelopePassword() {
+            if (document.getElementById("password-input").value.toLowerCase().trim() === ENVELOPE_PASSWORD) {
+                document.getElementById("lock-screen").style.display = "none";
+                document.getElementById("inner-content").style.display = "block";
+                setTimeout(() => { document.getElementById("inner-content").style.opacity = "1"; }, 50);
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
+        }
+
+        function goBackToEnvelope() {
+            document.getElementById("inner-content").style.display = "none";
+            document.getElementById("lock-screen").style.display = "block";
+        }
+
+        function openLightbox(imgSrc, captionText) {
+            document.getElementById('lightbox-img').src = imgSrc;
+            document.getElementById('lightbox-caption').innerText = captionText;
+            document.getElementById('lightbox-overlay').classList.add('active');
+        }
+
+        function closeLightbox() { document.getElementById('lightbox-overlay').classList.remove('active'); }
+
+        window.onload = () => {
+            const gallery = document.getElementById('main-gallery');
+            defaultPhotos.forEach((p, i) => {
+                let card = document.createElement('div');
+                card.className = 'photo-card visible';
+                card.innerHTML = `<img src="${p.src}"><div class="photo-caption">${p.cap}</div>`;
+                card.onclick = () => {
+                    card.classList.add('clicked-effect');
+                    setTimeout(() => { card.classList.remove('clicked-effect'); openLightbox(p.src, p.cap); }, 450);
+                };
+                gallery.appendChild(card);
+            });
+            document.getElementById('love-letter-display').innerText = loveMessages[0];
+        }
+    </script>
+</body>
+</html>
